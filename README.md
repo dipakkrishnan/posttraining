@@ -75,3 +75,12 @@ uv run posttraining countdown examples
 uv run posttraining countdown score --nums 2,3,4 --target 10 "(3 * 4) - 2"
 uv run posttraining countdown ast "(3 * 4) - 2"
 ```
+
+For notebook-based exploration, register this uv environment as a Jupyter kernel:
+
+```bash
+uv run python -m ipykernel install --user --name posttraining --display-name "posttraining"
+```
+
+Then open [notebooks/rlvr_data_playground.ipynb](notebooks/rlvr_data_playground.ipynb)
+and select the `posttraining` kernel.
