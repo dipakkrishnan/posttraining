@@ -84,3 +84,8 @@ uv run python -m ipykernel install --user --name posttraining --display-name "po
 
 Then open [notebooks/rlvr_data_playground.ipynb](notebooks/rlvr_data_playground.ipynb)
 and select the `posttraining` kernel.
+
+After a training run, use
+[notebooks/rlvr_run_dashboard.ipynb](notebooks/rlvr_run_dashboard.ipynb) to
+inspect reward curves, mixed-group signal, rollout summaries, and advantage
+intuition from the artifacts under `outputs/`.
