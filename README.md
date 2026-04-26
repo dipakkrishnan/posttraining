@@ -89,3 +89,19 @@ After a training run, use
 [notebooks/rlvr_run_dashboard.ipynb](notebooks/rlvr_run_dashboard.ipynb) to
 inspect reward curves, mixed-group signal, rollout summaries, and advantage
 intuition from the artifacts under `outputs/`.
+
+For a small Qwen smoke run, keep model/tokenizer/renderer aligned through env
+vars and use `chz` only for top-level training config:
+
+```bash
+POSTTRAINING_DEFAULT_MODEL=Qwen/Qwen3-4B-Instruct-2507 \
+POSTTRAINING_COUNTDOWN_BATCH_SIZE=8 \
+POSTTRAINING_COUNTDOWN_GROUP_SIZE=8 \
+uv run python -m posttraining.rlvr.countdown_train \
+  max_steps=3 \
+  lora_rank=8 \
+  max_tokens=128 \
+  eval_every=0 \
+  save_every=0 \
+  log_path=outputs/rlvr_countdown_qwen3_4b_smoke
+```

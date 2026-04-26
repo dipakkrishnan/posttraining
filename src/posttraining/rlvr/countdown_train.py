@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import sys
+from typing import Literal
 
 import chz
 from tinker_cookbook import cli_utils
@@ -15,13 +17,13 @@ def build_config_blueprint() -> chz.Blueprint[train.Config]:
     settings = load_settings()
     model_name, renderer_name = default_model_and_renderer(settings.default_model)
     builder = CountdownDatasetBuilder(
-        batch_size=16,
-        group_size=8,
+        batch_size=_int_env("POSTTRAINING_COUNTDOWN_BATCH_SIZE", 16),
+        group_size=_int_env("POSTTRAINING_COUNTDOWN_GROUP_SIZE", 8),
         model_name_for_tokenizer=model_name,
         renderer_name=renderer_name,
-        max_train_examples=4096,
-        max_eval_examples=256,
-        num_count=3,
+        max_train_examples=_optional_int_env("POSTTRAINING_COUNTDOWN_MAX_TRAIN_EXAMPLES", 4096),
+        max_eval_examples=_optional_int_env("POSTTRAINING_COUNTDOWN_MAX_EVAL_EXAMPLES", 256),
+        num_count=_num_count_env("POSTTRAINING_COUNTDOWN_NUM_COUNT", 3),
     )
 
     return chz.Blueprint(train.Config).apply(
@@ -38,6 +40,29 @@ def build_config_blueprint() -> chz.Blueprint[train.Config]:
             "num_groups_to_log": 4,
         }
     )
+
+
+def _int_env(name: str, default: int) -> int:
+    value = os.getenv(name)
+    if value is None or value.strip() == "":
+        return default
+    return int(value)
+
+
+def _optional_int_env(name: str, default: int | None) -> int | None:
+    value = os.getenv(name)
+    if value is None or value.strip() == "":
+        return default
+    if value.strip().lower() in {"none", "null"}:
+        return None
+    return int(value)
+
+
+def _num_count_env(name: str, default: Literal[3, 4] | None) -> Literal[3, 4] | None:
+    value = _optional_int_env(name, default)
+    if value in (3, 4, None):
+        return value
+    raise ValueError(f"{name} must be 3, 4, none, or unset")
 
 
 def main(config: train.Config) -> None:
