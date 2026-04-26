@@ -1,0 +1,14 @@
+# Starter config for supervised fine-tuning experiments.
+# Keep credentials in .env, not in config files.
+model_name: Qwen/Qwen3-0.6B
+task: sft
+dataset:
+  path: data/processed/train.jsonl
+  validation_path: data/processed/validation.jsonl
+training:
+  method: lora
+  lora_rank: 32
+  learning_rate: 0.0001
+  batch_size: 1
+  max_steps: 100
+output_dir: outputs/sft-qwen3-0.6b
