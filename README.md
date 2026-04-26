@@ -67,3 +67,11 @@ uv run python -m posttraining.rlvr.countdown_train
 
 The first-run defaults use `stzhao/tinyzero-countdown-data`, 3-number examples,
 `POSTTRAINING_DEFAULT_MODEL`, and logs under `outputs/rlvr_countdown_3num`.
+
+To play with the Countdown verifier locally without launching training:
+
+```bash
+uv run posttraining countdown examples
+uv run posttraining countdown score --nums 2,3,4 --target 10 "(3 * 4) - 2"
+uv run posttraining countdown ast "(3 * 4) - 2"
+```

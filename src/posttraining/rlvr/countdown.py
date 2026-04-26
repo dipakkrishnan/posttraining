@@ -100,6 +100,17 @@ def _evaluate_expression(expression: str) -> tuple[Fraction, list[int]]:
     return _eval_ast(tree.body)
 
 
+def expression_ast_dump(expression: str) -> str:
+    """Return a compact AST dump for teaching/debugging the verifier."""
+
+    normalized = expression.replace("×", "*").replace("÷", "/")
+    try:
+        tree = ast.parse(normalized, mode="eval")
+    except SyntaxError as exc:
+        raise CountdownExpressionError("invalid expression syntax") from exc
+    return ast.dump(tree.body, indent=2)
+
+
 def _eval_ast(node: ast.AST) -> tuple[Fraction, list[int]]:
     if isinstance(node, ast.BinOp):
         left_value, left_nums = _eval_ast(node.left)

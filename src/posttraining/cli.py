@@ -8,8 +8,10 @@ from rich.console import Console
 from rich.table import Table
 
 from posttraining.config import load_settings
+from posttraining.rlvr.countdown_cli import app as countdown_app
 
 app = typer.Typer(no_args_is_help=True)
+app.add_typer(countdown_app, name="countdown")
 console = Console()
 
 
