@@ -55,3 +55,15 @@ uv run pytest
 - Keep secrets in `.env`; the file is intentionally ignored by git.
 - `configs/sft.example.yaml` is a starting point for supervised fine-tuning
   experiments, not a finished recipe.
+
+## RLVR Track
+
+The staged RLVR plan is in [docs/rlvr-roadmap.md](docs/rlvr-roadmap.md).
+Stage 1 starts with Countdown arithmetic:
+
+```bash
+uv run python -m posttraining.rlvr.countdown_train
+```
+
+The first-run defaults use `stzhao/tinyzero-countdown-data`, 3-number examples,
+`POSTTRAINING_DEFAULT_MODEL`, and logs under `outputs/rlvr_countdown_3num`.
